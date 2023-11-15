@@ -27,10 +27,30 @@ const dotifyWord = function(word){
 
 guessBtn.addEventListener("click", function(e){
     e.preventDefault(); //prevent default reloading behavior
-    const guessLtr = guessInput.value; 
-    console.log(guessLtr); 
+    let guessLtr = guessInput.value; 
+    //console.log(guessLtr); 
+   
+    validateInput(guessLtr); 
     guessLtr = ""; //clear input
 
 });
+
+const validateInput = function(input){
+    const acceptedLetter = /[a-zA-Z]/
+    if(input ==="" ){
+        guessMsgs.innerText= `You must submit a letter to guess!`;
+    }
+    else if (input.length >1 ){
+        guessMsgs.innerText = `Only one character allowed at a time!`;
+    }
+    else if (input.match(acceptedLetter)){
+        //if accepted letter, then have to compare against the word. 
+        console.log(input); 
+
+    }
+
+};
+
+
 
 dotifyWord(word); 
