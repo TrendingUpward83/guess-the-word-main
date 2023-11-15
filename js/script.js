@@ -15,6 +15,7 @@ const remainingGuesses = document.querySelector(".remaining");
 const guessMsgs = document.querySelector(".message");
 const playAgainBtn =document.querySelector(".play-again"); 
 const word = "magnolia"; 
+const guessedLetters = []; 
 
 const dotifyWord = function(word){
 
@@ -45,11 +46,27 @@ const validateInput = function(input){
     }
     else if (input.match(acceptedLetter)){
         //if accepted letter, then have to compare against the word. 
-        console.log(input); 
-
+        //console.log(input); 
+        makeGuess(input);  
+    }
+    else if (!input.match(acceptedLetter)){
+        guessMsgs.innerText = `Must enter a letter, not a number or symbol please!!`;
     }
 
 };
+
+const makeGuess = function(letter){
+    const clean = letter.toUpperCase(); 
+    if (guessedLetters.includes(clean)){
+        guessMsgs.innerText = `You already guessed that one!`
+    }
+    else (guessedLetters.push(clean)); 
+    console.log(guessedLetters); 
+
+
+};
+
+
 
 
 
