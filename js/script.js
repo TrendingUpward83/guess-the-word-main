@@ -1,21 +1,15 @@
-/*The unordered list where the player’s guessed letters will appear.
-The button with the text “Guess!” in it.
-The text input where the player will guess a letter.
-The empty paragraph where the word in progress will appear.
-The paragraph where the remaining guesses will display.
-The span inside the paragraph where the remaining guesses will display.
-The empty paragraph where messages will appear when the player guesses a letter.
-The hidden button that will appear prompting the player to play again.*/
+
 
 const guessedLtrList = document.querySelector(".guessed-letters")
 const guessBtn= document.querySelector(".guess");
 const guessInput = document.querySelector(".letter");
 const wordProg = document.querySelector(".word-in-progress");
-const remainingGuesses = document.querySelector(".remaining");
+const remainingGuesses = document.querySelector(".remaining span");
 const guessMsgs = document.querySelector(".message");
 const playAgainBtn =document.querySelector(".play-again"); 
 const word = "magnolia"; 
 const guessedLetters = []; 
+let numRemainingGuesses = 8; 
 
 const dotifyWord = function(word){
 
@@ -51,7 +45,8 @@ const validateInput = function(input){
     else if (input.match(acceptedLetter)){
         //if accepted letter, then have to compare against the word. 
         //console.log(input); 
-        makeGuess(input);  
+        makeGuess(input);
+        
     }
     else if (!input.match(acceptedLetter)){
         guessMsgs.innerText = `Must enter a letter, not a number or symbol please!!`;
@@ -75,7 +70,7 @@ const updateWordProg = function(guessedLetterArray){
         checkWinStatus(guessedWord);
         
 }; 
-const showGuessedLetters = function(letter){
+const showGuessedLetters = function(guessedLetters){
     guessedLtrList.innerHTML = ""; 
     for (let letter of guessedLetters){
         const guessedLetterLI = document.createElement("li"); 
@@ -92,10 +87,33 @@ const makeGuess = function(letter){
         guessMsgs.innerText = `You already guessed that one!`
     }
     else (guessedLetters.push(clean)); 
-    showGuessedLetters(clean);
+    showGuessedLetters(guessedLetters);
+    countGuesses(clean); 
     updateWordProg(guessedLetters); 
     
+    
 };
+
+const countGuesses = function(guess){
+    const upWord = word.toUpperCase();
+    if(upWord.includes(guess)){
+        guessMsgs.innerText=`Good guess! Word does have letter ${guess}. `;  
+    }
+    else{
+        guessMsgs.innerText=`Sorry, the word has no ${guess}. `; 
+        numRemainingGuesses-=1;
+        remainingGuesses.innerText = `${numRemainingGuesses} guesses`
+    
+            if(numRemainingGuesses==0)
+            {
+                guessMsgs.innerText=`Game Over! Word is ${word}.`;
+
+    }
+    };
+};
+    
+    
+
 
 const checkWinStatus = function (guessedWord){
     if(guessedWord===word.toUpperCase()){
