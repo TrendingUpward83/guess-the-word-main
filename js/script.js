@@ -9,7 +9,7 @@ The hidden button that will appear prompting the player to play again.*/
 
 const guessedLtrList = document.querySelector(".guessed-letters")
 const guessBtn= document.querySelector(".guess");
-const guessInput = document.querySelector("#letter");
+const guessInput = document.querySelector(".letter");
 const wordProg = document.querySelector(".word-in-progress");
 const remainingGuesses = document.querySelector(".remaining");
 const guessMsgs = document.querySelector(".message");
@@ -26,18 +26,22 @@ const dotifyWord = function(word){
 
 };
 
+dotifyWord(word); 
+
 guessBtn.addEventListener("click", function(e){
     e.preventDefault(); //prevent default reloading behavior
+    guessMsgs.innerText=""; 
     let guessLtr = guessInput.value; 
     //console.log(guessLtr); 
    
     validateInput(guessLtr); 
-    guessLtr = ""; //clear input
+   
 
 });
 
 const validateInput = function(input){
     const acceptedLetter = /[a-zA-Z]/
+    guessInput.value=""; //clear input
     if(input ==="" ){
         guessMsgs.innerText= `You must submit a letter to guess!`;
     }
@@ -54,6 +58,33 @@ const validateInput = function(input){
     }
 
 };
+const updateWordProg = function(guessedLetterArray){
+        const wordUpper = word.toUpperCase(); 
+        const wordArray = wordUpper.split(""); //wordArray is word split into an array
+        const revealWord = [];
+        for (const letter of wordArray) {
+          if (guessedLetterArray.includes(letter)) {
+            revealWord.push(letter.toUpperCase());
+          } else {
+            revealWord.push("●"); //push to keep building the word in the new array
+          }
+        }
+       
+        const guessedWord = revealWord.join(""); 
+        wordProg.innerHTML = guessedWord;
+        checkWinStatus(guessedWord);
+        
+}; 
+const showGuessedLetters = function(letter){
+    guessedLtrList.innerHTML = ""; 
+    for (let letter of guessedLetters){
+        const guessedLetterLI = document.createElement("li"); 
+        guessedLetterLI.innerHTML= `<li>${letter.toUpperCase()}</li>`;
+        guessedLtrList.append(guessedLetterLI); 
+
+    }
+
+};
 
 const makeGuess = function(letter){
     const clean = letter.toUpperCase(); 
@@ -61,13 +92,17 @@ const makeGuess = function(letter){
         guessMsgs.innerText = `You already guessed that one!`
     }
     else (guessedLetters.push(clean)); 
-    console.log(guessedLetters); 
+    showGuessedLetters(clean);
+    updateWordProg(guessedLetters); 
+    
+};
 
-
+const checkWinStatus = function (guessedWord){
+    if(guessedWord===word.toUpperCase()){
+        guessMsgs.classList.add("win");
+        guessMsgs.innerHTML= `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+    };
+   
 };
 
 
-
-
-
-dotifyWord(word); 
