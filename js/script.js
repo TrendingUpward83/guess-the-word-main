@@ -1,14 +1,15 @@
-/*TODO: I did this when I was extremely tired from a period of not sleeping. It needs looked over and likely refactored */
-
+/*TODO: I did this when I was extremely tired from a period of not sleeping. It needs looked over and likely refactored
+Refactor, clean up and remove the entry text box when clicking the play again */
 const guessedLtrList = document.querySelector(".guessed-letters");
 const guessBtn= document.querySelector(".guess");
 const guessInput = document.querySelector(".letter");
 const wordProg = document.querySelector(".word-in-progress");
 const remainingGuesses = document.querySelector(".remaining span");
+const remainingGuessP = document.querySelector(".remaining");
 const guessMsgs = document.querySelector(".message");
 const playAgainBtn =document.querySelector(".play-again"); 
 let word = "magnolia"; 
-const guessedLetters = []; 
+let guessedLetters = []; 
 let numRemainingGuesses = 8; 
 
 const getWord = async function(){
@@ -28,7 +29,7 @@ const dotifyWord = function(word){
         wordProg.innerHTML+= `&#9679`;  //supposedly supposed to use join() here. 
         
     }
-
+    return word;
 };
 
 dotifyWord(word); 
@@ -41,6 +42,27 @@ guessBtn.addEventListener("click", function(e){
    
     validateInput(guessLtr); 
    
+
+});
+
+playAgainBtn.addEventListener("click", function(e){
+    e.preventDefault(); 
+    guessInput.classList.remove("hide");
+    guessMsgs.classList.remove("win");
+    guessBtn.classList.remove("hide");
+    remainingGuessP.classList.remove("hide");
+    guessedLtrList.classList.remove("hide"); 
+    playAgainBtn.classList.add("hide"); 
+    numRemainingGuesses = 8;
+    guessedLetters = []; 
+    remainingGuesses.innerText = `${numRemainingGuesses} guesses`
+    guessMsgs.innerText=``; 
+    wordProg.innerHTML=``;
+    getWord();
+    dotifyWord(word); 
+    guessedLtrList.innerHTML=``;
+
+
 
 });
 
@@ -119,20 +141,31 @@ const countGuesses = function(guess){
             if(numRemainingGuesses==0)
             {
                 guessMsgs.innerText=`Game Over! Word is ${word}.`;
+                startOver(); 
 
     }
     };
 };
     
-    
-
 
 const checkWinStatus = function (guessedWord){
     if(guessedWord===word.toUpperCase()){
         guessMsgs.classList.add("win");
+        guessInput.classList.add("hide");
         guessMsgs.innerHTML= `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+        startOver();
     };
    
 };
 
+
+const startOver = function(){
+
+
+    guessBtn.classList.add("hide");
+    remainingGuessP.classList.add("hide");
+    guessedLtrList.classList.add("hide"); 
+    playAgainBtn.classList.remove("hide"); 
+    
+};
 
