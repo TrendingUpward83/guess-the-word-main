@@ -1,15 +1,26 @@
+/*TODO: I did this when I was extremely tired from a period of not sleeping. It needs looked over and likely refactored */
 
-
-const guessedLtrList = document.querySelector(".guessed-letters")
+const guessedLtrList = document.querySelector(".guessed-letters");
 const guessBtn= document.querySelector(".guess");
 const guessInput = document.querySelector(".letter");
 const wordProg = document.querySelector(".word-in-progress");
 const remainingGuesses = document.querySelector(".remaining span");
 const guessMsgs = document.querySelector(".message");
 const playAgainBtn =document.querySelector(".play-again"); 
-const word = "magnolia"; 
+let word = "magnolia"; 
 const guessedLetters = []; 
 let numRemainingGuesses = 8; 
+
+const getWord = async function(){
+    const res = await fetch(`https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt`);
+    data = await res.text(); 
+    const wordArray = data.split("\n");
+    const randIndex = Math.floor(Math.random() * (wordArray.length - 1) + 1); 
+    word = wordArray[randIndex].trim();
+    
+};
+
+getWord(); 
 
 const dotifyWord = function(word){
 
@@ -85,6 +96,7 @@ const makeGuess = function(letter){
     const clean = letter.toUpperCase(); 
     if (guessedLetters.includes(clean)){
         guessMsgs.innerText = `You already guessed that one!`
+        return;
     }
     else (guessedLetters.push(clean)); 
     showGuessedLetters(guessedLetters);
