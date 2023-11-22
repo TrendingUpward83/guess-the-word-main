@@ -1,5 +1,6 @@
 /*TODO: I did this when I was extremely tired from a period of not sleeping. It needs looked over and likely refactored
 Refactor, clean up and remove the entry text box when clicking the play again */
+const guessLabel = document.querySelector(".guess-form label");
 const guessedLtrList = document.querySelector(".guessed-letters");
 const guessBtn= document.querySelector(".guess");
 const guessInput = document.querySelector(".letter");
@@ -140,7 +141,7 @@ const countGuesses = function(guess){
     
             if(numRemainingGuesses==0)
             {
-                guessMsgs.innerText=`Game Over! Word is ${word}.`;
+                guessMsgs.innerText=`Game Over! Word is ${word.toUpperCase()}.`;
                 startOver(); 
 
     }
@@ -152,7 +153,7 @@ const checkWinStatus = function (guessedWord){
     if(guessedWord===word.toUpperCase()){
         guessMsgs.classList.add("win");
         guessInput.classList.add("hide");
-        guessMsgs.innerHTML= `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+        guessMsgs.innerHTML= `<p class="highlight">You guessed the word! Amazing!</p>`;
         startOver();
     };
    
@@ -161,7 +162,8 @@ const checkWinStatus = function (guessedWord){
 
 const startOver = function(){
 
-
+    guessLabel.classList.add("hide"); 
+    guessInput.classList.add("hide");
     guessBtn.classList.add("hide");
     remainingGuessP.classList.add("hide");
     guessedLtrList.classList.add("hide"); 
